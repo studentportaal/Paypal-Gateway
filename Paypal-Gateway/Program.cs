@@ -7,14 +7,18 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PaypalGateway.Domain;
 
 namespace Paypal_Gateway
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
+            Subscriber.CreateSubscription("pts6-bijbaan", "payment", "payment");
+            await Subscriber.PullMessageAsync("pts6-bijbaan", "payment", true);
             CreateWebHostBuilder(args).Build().Run();
+
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
