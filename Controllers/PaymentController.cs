@@ -43,7 +43,7 @@ namespace PaypaGateway.Controllers
             var gateway = Config.GetGateway();
             var request = new TransactionRequest
             {
-                Amount = company.Price(),
+                Amount = company.Price,
                 PaymentMethodNonce = company.PaymentMethodNonce,
                 Options = new TransactionOptionsRequest
                 {
