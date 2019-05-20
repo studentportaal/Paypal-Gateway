@@ -15,10 +15,7 @@ namespace Paypal_Gateway
     {
         public static async Task Main(string[] args)
         {
-            Subscriber.CreateSubscription("pts6-bijbaan", "payment", "payment");
-            await Subscriber.PullMessageAsync("pts6-bijbaan", "payment", true);
             CreateWebHostBuilder(args).Build().Run();
-
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
