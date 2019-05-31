@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Braintree;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PaypalGateway.Domain;
@@ -13,6 +14,7 @@ using PaypalGateway.Service;
 
 namespace PaypaGateway.Controllers
 {
+    //[Authorize(Roles = "COMPANY")]
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentController : Controller
@@ -34,17 +36,17 @@ namespace PaypaGateway.Controllers
             return clienttoken;
 
         }
-
+        
         [HttpPost]
         [Route("transaction")]
-        public async Task<object> CheckOutAsync(Company company)
+        public async Task<object> CheckOutAsync(PaymentRequest paymentRequest)
         {
             string paymentstatus = string.Empty;
             var gateway = Config.GetGateway();
             var request = new TransactionRequest
             {
-                Amount = company.Price,
-                PaymentMethodNonce = company.PaymentMethodNonce,
+                Amount = 10.00m,
+                PaymentMethodNonce = paymentRequest.PaymentMethodNonce,
                 Options = new TransactionOptionsRequest
                 {
                     SubmitForSettlement = true
@@ -56,7 +58,9 @@ namespace PaypaGateway.Controllers
             if (transactionResult.IsSuccess())
             {
                 paymentstatus = "succeeded";
-                string json = JsonConvert.SerializeObject(company);
+                paymentRequest.PaymentDate = DateTime.Today;
+                paymentRequest.Price = request.Amount;
+                string json = JsonConvert.SerializeObject(paymentRequest);
                 PaymentService.publishMessage(json);
             }
             else
@@ -68,7 +72,7 @@ namespace PaypaGateway.Controllers
                 }
                 paymentstatus = errormessages;
             }
-            return paymentstatus;
+            return paymentRequest;
         }
     }
 
