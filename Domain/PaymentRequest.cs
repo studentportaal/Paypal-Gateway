@@ -8,7 +8,7 @@ namespace PaypalGateway.Domain
     public class PaymentRequest
     {
         public string companyId { get; set; }
-        public string jobOfferId { get; set; }
+        public string id { get; set; }
         public decimal Price { get; set; }
         public string PaymentMethodNonce { get; set; }
         public DateTime PaymentDate { get; set; }

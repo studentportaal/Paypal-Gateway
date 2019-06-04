@@ -58,7 +58,7 @@ namespace PaypaGateway.Controllers
             if (transactionResult.IsSuccess())
             {
                 paymentstatus = "succeeded";
-                paymentRequest.PaymentDate = DateTime.Today;
+                paymentRequest.PaymentDate = DateTime.UtcNow;
                 paymentRequest.Price = request.Amount;
                 string json = JsonConvert.SerializeObject(paymentRequest);
                 PaymentService.publishMessage(json);
@@ -70,7 +70,8 @@ namespace PaypaGateway.Controllers
                 {
                     errormessages += "Error: " + error.Message;
                 }
-                paymentstatus = errormessages;
+                return errormessages;
+
             }
             return paymentRequest;
         }

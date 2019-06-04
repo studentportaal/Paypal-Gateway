@@ -1,2 +1,22 @@
-runtime: custom
+service: braintree-gateway
+
+instance_class: F1
+
+runtime: aspnetcore
 env: flex
+
+automatic_scaling:
+    max_num_instances: 1
+    
+    
+resources:
+  cpu: .5
+  memory_gb: 0.90
+  disk_size_gb: 10
+
+env_variables:
+    BrainTreePrivateKey: '8420e59886fc1fd6984c16310ac3eb8e' 
+    BraintreePublicKey: '4qjywwv4jzxpvn2v' 
+    BrainTreeEnvironment: 'sandbox'
+    BraintreeMerchantId: 'tdqvvxxzvfxn2wwv'
+    
